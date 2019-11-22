@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .wrap{
+            width: 700px;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .container{
+            display: flex;
+
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+        }
+        .item{
+            width: 80px;
+            height: 80px;
+            margin: auto;
+            line-height: 80px;
+            border-radius: 50%;
+            background-color: #afa;
+        }
+        .item h2{
+            display: inline-block;
+            text-align: center;
+            line-height: 70px;
+            width: 70px;
+            height: 70px;
+            margin: auto;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+        .self{
+            transform: scale(1.3);
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="container">
+            <div class="item" id="one" draggable="true">
+                <h2>1</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="item" id="two" draggable="true">
+                <h2>2</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="item" id="three" draggable="true">
+                <h2>3</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="item" id="four" draggable="true">
+                <h2>4</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="item" id="five" draggable="true">
+                <h2>5</h2>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const className = "item";
+        let items = document.getElementsByClassName(className);
+        // items.foreach((item) => {item.addEventListener('dragstart', dragStart)})
+        Array.prototype.forEach.call(items, (e) => {
+            e.addEventListener('dragstart', dragStart)
+            e.addEventListener('drag', drag)
+            e.addEventListener('dragend', dragEnd)
+        })
+
+        function dragStart(){
+            console.log('start')
+        }
+        function drag(e){
+            let x = e.clientX;
+            let y = e.clientY;
+            let swapItem = document.elementFromPoint(x, y);
+            if(swapItem.parentElement.classList.contains(className)){
+                swapItem = swapItem.parentElement;
+            }
+            let swapParent = swapItem.parentElement;
+            let self = e.target;
+            self.classList.add('self');
+
+            if(swapItem.classList.contains(className)){
+                self.parentElement.append(swapItem);
+                swapParent.append(self);
+            }
+            console.log(swapItem)
+            console.log(self.id)
+        }
+        function dragEnd(e){
+            e.target.classList.remove('self')
+            console.log('end')
+        }
+    </script>
+</body>
+</html>
